@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>For Akosuahh</title>
+  <meta name="theme-color" content="#1b0b12" />
+  <style>
+    :root{
+      --bg1:#12060c;
+      --bg2:#2a0a17;
+      --bg3:#4a0f22;
+      --fg:#f6efe9;
+      --muted:rgba(246,239,233,.72);
+      --gold:#d6a46a;
+      --shadow: 0 20px 70px rgba(0,0,0,.45);
+      --radius: 18px;
+    }
+
+    *{ box-sizing: border-box; }
+    html,body{ height:100%; }
+
+    body{
+      margin:0;
+      background:
+        radial-gradient(1200px 900px at 50% 35%, rgba(214,164,106,.14), transparent 55%),
+        linear-gradient(160deg, var(--bg1), var(--bg2) 55%, var(--bg3));
+      color: var(--fg);
+      font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
+      overflow:hidden;
+    }
+
+    body::before{
+      content:"";
+      position:fixed; inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
+      mix-blend-mode:overlay;
+      opacity:.18;
+      pointer-events:none;
+    }
+
+    canvas#fx{
+      position:fixed; inset:0;
+      width:100%; height:100%;
+      pointer-events:none;
+    }
+
+    .wrap{
+      height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+
+    .card{
+      width:min(720px, 92vw);
+      background:rgba(10,4,8,.35);
+      border:1px solid rgba(214,164,106,.18);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(10px);
+      padding:26px 22px;
+      transition:.6s ease;
+    }
+
+    .topline{
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      font-family:system-ui, sans-serif;
+      font-size:12px;
+      color:rgba(214,164,106,.7);
+      margin-bottom:10px;
+    }
+
+    .content{
+      min-height:220px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      gap:14px;
+    }
+
+    .line{
+      font-size:clamp(20px, 3.8vw, 34px);
+      line-height:1.24;
+      opacity:0;
+      transform:translateY(8px);
+      transition:.9s ease;
+    }
+
+    .line.small{ font-size:clamp(18px, 3vw, 26px); color:var(--muted); }
+    .line.center{ text-align:center; }
+    .line.show{ opacity:1; transform:none; }
+
+    .btnrow{
+      display:flex;
+      justify-content:center;
+      margin-top:18px;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .stack{ flex-direction:column; gap:10px; }
+
+    button{
+      border-radius:999px;
+      padding:12px 20px;
+      border:1px solid rgba(214,164,106,.35);
+      background:rgba(18,6,12,.35);
+      color:var(--fg);
+      font-family:system-ui, sans-serif;
+      cursor:pointer;
+      transition:.25s ease;
+    }
+
+    button.primary{
+      border-color:rgba(214,164,106,.6);
+      box-shadow:0 0 26px rgba(214,164,106,.22);
+    }
+
+    button.ghost{
+      opacity:.85;
+    }
+
+    .bloom{
+      position:fixed;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      opacity:0;
+      pointer-events:none;
+    }
+
+    .bloom.show{
+      animation:bloom 1.2s ease forwards;
+    }
+
+    @keyframes bloom{
+      0%{opacity:0}
+      20%{opacity:1}
+      100%{opacity:0}
+    }
+  </style>
+</head>
+
+<body>
+<canvas id="fx"></canvas>
+
+<div class="wrap">
+  <div class="card" id="card">
+    <div class="topline" id="topline">A quiet moment</div>
+    <div class="content" id="content"></div>
+    <div class="btnrow" id="btnrow"></div>
+  </div>
+</div>
+
+<div class="bloom" id="bloom">
+  ❤️
+</div>
+
+<script>
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const content = document.getElementById("content");
+const btnrow = document.getElementById("btnrow");
+const topline = document.getElementById("topline");
+const bloom = document.getElementById("bloom");
+
+function clearUI(){
+  content.innerHTML="";
+  btnrow.innerHTML="";
+  btnrow.className="btnrow";
+}
+
+function line(text, cls=""){
+  const d=document.createElement("div");
+  d.className="line "+cls;
+  d.textContent=text;
+  content.appendChild(d);
+  setTimeout(()=>d.classList.add("show"),50);
+}
+
+function button(text, cls="", fn){
+  const b=document.createElement("button");
+  b.textContent=text;
+  b.className=cls;
+  b.onclick=fn;
+  btnrow.appendChild(b);
+  return b;
+}
+
+async function screen(fn){
+  clearUI();
+  await fn();
+}
+
+async function start(){
+  await screen(async()=>{
+    line("For Akosuahh.","center small");
+    await sleep(900);
+    button("Begin","primary",next);
+  });
+}
+
+async function next(){
+  await screen(async()=>{
+    topline.textContent="Just for you";
+    line("Hey Akosuahh…");
+    await sleep(1800);
+    line("I hope you opened this when things are quiet.","small");
+    await sleep(2000);
+    line("Because this…");
+    await sleep(800);
+    line("is just for you.");
+    await sleep(1800);
+    button("Continue","primary",ground);
+  });
+}
+
+async function ground(){
+  await screen(async()=>{
+    topline.textContent="A small truth";
+    line("Some people pass through our lives.");
+    await sleep(1800);
+    line("And some people become our place.","small");
+    await sleep(2000);
+    line("You became mine.");
+    await sleep(2000);
+    button("Stay with me","primary",always);
+  });
+}
+
+async function always(){
+  await screen(async()=>{
+    topline.textContent="My Always and All Ways";
+    line("You’re my Always");
+    await sleep(1200);
+    line("and my All Ways.");
+    await sleep(2800);
+    line("In the little moments.","small");
+    await sleep(1200);
+    line("In the distance.","small");
+    await sleep(1200);
+    line("In the choosing.","small");
+    await sleep(1600);
+    button("Go on","primary",questionPrep);
+  });
+}
+
+async function questionPrep(){
+  await screen(async()=>{
+    topline.textContent="Just one question";
+    line("So today…");
+    await sleep(2000);
+    line("I want to ask you something.","small");
+    await sleep(2000);
+    button("I’m ready","primary",question);
+  });
+}
+
+async function question(){
+  await screen(async()=>{
+    topline.textContent="";
+    btnrow.classList.add("stack");
+    line("Will you be my Valentine?","center");
+    await sleep(800);
+
+    let noScale=1, yesScale=1;
+
+    const no = button("No","ghost",()=>{
+      noScale=Math.max(.6,noScale-.07);
+      yesScale=Math.min(1.2,yesScale+.04);
+      no.style.transform=`scale(${noScale})`;
+      yes.style.transform=`scale(${yesScale})`;
+    });
+
+    const yes = button("Yes","primary",()=>{
+      bloom.classList.add("show");
+      setTimeout(finalMessage,600);
+    });
+  });
+}
+
+async function finalMessage(){
+  await screen(async()=>{
+    line("Babe, being with you has shown me how calm and honest love can be.");
+    await sleep(2600);
+    line("You feel familiar and grounding to my heart in a quiet, reassuring way.","small");
+    await sleep(2600);
+    line("I don’t take loving you for granted.","small");
+    await sleep(12000);
+    clearUI();
+    line("I love you Akosuahh.","center");
+    await sleep(6000);
+    clearUI();
+    line("Yours, DanDeal","center small");
+  });
+}
+
+start();
+</script>
+</body>
+</html>
